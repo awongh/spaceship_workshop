@@ -1,8 +1,3 @@
-//Hold "global variables" in one closure/self-executing function
-//Suggested reading of the Revealing Module Patter:
-//http://addyosmani.com/resources/essentialjsdesignpatterns/book/#revealingmodulepatternjavascript
-//https://carldanley.com/js-revealing-module-pattern/
-
 var Game = (function() {
   var canvas = document.createElement("canvas"),
       ctx = canvas.getContext("2d")
@@ -13,32 +8,44 @@ var Game = (function() {
           speed: 4
         }),
       enemies =  [new EnemyShip({
-        x: 0, 
+        x: 0,
         y: 0,
-        image:"images/enemyShip.png", 
-        speed: 2, 
+        image:"images/enemyShip.png",
+        speed: 2,
         hero: heroShip
       })],
-      coin = new Coin({
-        x: 400, 
-        y: 400,
-        image:"images/coin.png"
-      }),
-      bullets = [],
       spaceImg = createImage("images/spaceBG.png");
   canvas.width = 912;
   canvas.height = 718;
 
+
   return {
+    over : function(){
+      var that = this;
+      this.is_over = true
+      var blink = true;
+      setInterval(function(){
+        that.ctx.font = "60px Helvetica";
+        that.ctx.fillText("GAME OVER", 275, 300);
+        blink = !blink
+        var color = blink ? "#000000" : "#ffffff";
+        that.ctx.fillStyle = color;
+      },1000)
+
+
+
+    },
+
+    restart_game : function(){
+
+    },
+
     canvas: canvas,
-    coin: coin,
     coinsCollected: 0,
     ctx: ctx,
     enemies: enemies,
     heroShip: heroShip,
     keysDown: {},
-    over: false,
-    spaceImg: spaceImg,
-    bullets : bullets
-  }
-}())
+    is_over: false,
+  };
+}());
