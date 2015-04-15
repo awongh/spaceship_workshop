@@ -18,7 +18,8 @@ function render() {
   Game.ctx.clearRect(0, 0, Game.canvas.width, Game.canvas.height);
 
   //redraw
-  moveHero() //moved via keyboard input
+  Game.heroShip.move();
+  Game.heroShip.render()
   moveEnemies() //enemies chase hero, also checks if enemies have caught hero
 
   requestAnimationFrame(render);
@@ -40,43 +41,16 @@ function moveEnemies() {
   for (var i = 0, enemiesLength = enemies.length; i < enemiesLength; i++) {
     enemies[i].chase()
     enemies[i].render()
-    if( checkEnemyTouch(enemies[i]) == true ){
+    if( enemies[i].checkTouch() == true ){
        Game.over();
     }
   }
 }
 
-function moveHero() {
-  var heroShip = Game.heroShip;
-  heroShip.move();
-  heroShip.render()
-}
-
 function newRandomEnemy() {
-  var options = [];
-  options.x = randomInt( 0, Game.canvas.width );
-  options.y = randomInt( 0, Game.canvas.height );
-  options.image = "images/enemyShip.png"
-  options.speed = 3
-  options.hero = Game.heroShip
-  return new EnemyShip(options)
-}
-
-function checkEnemyTouch(enemy) {
-  var heroShip = Game.heroShip;
-  if (
-      heroShip.x <= (enemy.x + 24)
-      && enemy.x <= (heroShip.x + 24)
-      && heroShip.y <= (enemy.y + 24)
-      && enemy.y <= (heroShip.y + 24)
-    ){
-    return true;
-  }
-  return false;
-}
-
-function randomInt( min, max ){
-  return Math.floor(Math.random() * (max - min)) + min;
+  var ship = new EnemyShip({hero:Game.heroShip});
+  ship.random_spawn();
+  return ship;
 }
 
 $(document).ready(function() {

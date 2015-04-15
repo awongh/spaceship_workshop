@@ -1,23 +1,18 @@
 var Game = (function() {
   var canvas = document.createElement("canvas"),
-      ctx = canvas.getContext("2d")
+      ctx = canvas.getContext("2d"),
       heroShip = new HeroShip({
           x:300,
-          y:300,
-          image:"images/heroShip.png",
-          speed: 4
+          y:300
         }),
       enemies =  [new EnemyShip({
         x: 0,
         y: 0,
-        image:"images/enemyShip.png",
-        speed: 2,
         hero: heroShip
-      })],
-      spaceImg = createImage("images/spaceBG.png");
-  canvas.width = 912;
-  canvas.height = 718;
+      })];
 
+  canvas.width = 950;
+  canvas.height = 730;
 
   return {
     over : function(){
@@ -31,13 +26,6 @@ var Game = (function() {
         var color = blink ? "#000000" : "#ffffff";
         that.ctx.fillStyle = color;
       },1000)
-
-
-
-    },
-
-    restart_game : function(){
-
     },
 
     canvas: canvas,
